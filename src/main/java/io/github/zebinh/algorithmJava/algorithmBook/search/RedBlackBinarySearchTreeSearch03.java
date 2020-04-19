@@ -2,6 +2,7 @@ package io.github.zebinh.algorithmJava.algorithmBook.search;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -16,18 +17,24 @@ public class RedBlackBinarySearchTreeSearch03 {
             bsTree.insert(nums[i]);
         }
         BST.Node root = bsTree.root;
-//        Queue<BST.Node> q = new LinkedList<>();
-//        q.offer(root);
-//        while(q.size() > 0) {
-//            BST.Node node = q.poll();
-//            System.out.print(node.value + ", ");
-//            if (node.left != null){
-//                q.offer(node.left);
-//            }
-//            if (node.right != null){
-//                q.offer(node.right);
-//            }
-//        }
+        Queue<BST.Node> cur = new LinkedList<>();
+        Queue<BST.Node> next = new LinkedList<>();
+        cur.offer(root);
+        while(!cur.isEmpty()) {
+            BST.Node node = cur.poll();
+            System.out.print(node.value + ",");
+            if (node.left != null){
+                next.offer(node.left);
+            }
+            if (node.right != null){
+                next.offer(node.right);
+            }
+            if (cur.isEmpty()) {
+                System.out.println();
+                cur = next;
+                next = new LinkedList<>();
+            }
+        }
 
         while(root != null){
             if (root.value == target) {
@@ -109,14 +116,19 @@ public class RedBlackBinarySearchTreeSearch03 {
         public void flipColor(Node node) {
             node.color = true;
             node.left.color = false;
-            node.right.color = true;
+            node.right.color = false;
         }
     }
 
 
     public static void main(String[] args) {
         // 测试用例
-        int[] nums = new int[]{-9, -7, -1, 0, 1, 3, 5, 7, 8, 9, 10, 15};
-        System.out.println(search(nums, 2));
+        final int COUNT = 127;
+        int [] nums = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//        int[] nums = new int[COUNT];
+//        for (int i = 0; i < COUNT; i++) {
+//            nums[i] = (int)(Math.random() * 1000);
+//        }
+        System.out.println(search(nums, -1));
     }
 }
