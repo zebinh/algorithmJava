@@ -20,39 +20,27 @@ class ListNode {
 public class AddTwoNumbers {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int sum = l1.val + l2.val;
-        ListNode head = new ListNode(sum % 10);
-        int highBit = sum / 10;
-        ListNode newCur = head;
-        ListNode i = l1.next;
-        ListNode j = l2.next;
-        while (i != null && j != null) {
-            sum = i.val + j.val;
-            ListNode newNode = new ListNode((sum+highBit) % 10);
-            newCur.next = newNode;
-            newCur = newNode;
-            highBit = (sum + highBit) / 10;
-            i = i.next;
-            j = j.next;
+        ListNode head = new ListNode(0);
+        ListNode curNode = head, i = l1, j = l2;
+        int carry = 0;
+        while (i != null || j != null) {
+            int v1 = i == null ? 0 : i.val;
+            int v2 = j == null ? 0 : j.val;
+            int sum = carry + v1 + v2;
+            ListNode newNode = new ListNode(sum % 10);
+            curNode.next = newNode;
+            curNode = newNode;
+            carry = sum / 10;
+            if (i != null){
+                i = i.next;
+            }
+            if (j != null){
+                j = j.next;
+            }
         }
-        while (i != null) {
-            ListNode newNode = new ListNode((i.val+highBit) % 10);
-            newCur.next = newNode;
-            newCur = newNode;
-            highBit = (i.val+highBit) / 10;
-            i = i.next;
+        if (carry > 0) {
+            curNode.next = new ListNode(carry);
         }
-        while (j != null) {
-            ListNode newNode = new ListNode((j.val+highBit) % 10);
-            newCur.next = newNode;
-            newCur = newNode;
-            highBit = (j.val+highBit) / 10;
-            j = j.next;
-        }
-        if (highBit == 1) {
-            ListNode newNode = new ListNode(highBit);
-            newCur.next = newNode;
-        }
-        return head;
+        return head.next;
     }
 }
